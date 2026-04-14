@@ -57,3 +57,30 @@ describe("Tree Constructor", () => {
     });
   });
 });
+
+describe("includes method", () => {
+  it("includes method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "includes")).toBe(true);
+    expect(typeof Tree.prototype.includes).toBe("function");
+  });
+
+  it("Returns false for empty tree", () => {
+    const tree = new Tree();
+    expect(tree.includes()).toBe(false);
+  });
+
+  it("Returns true value is at top-level root", () => {
+    const tree = new Tree([1]);
+    expect(tree.includes(1)).toBe(true);
+  });
+
+  it("Returns true if value is in a subtree root", () => {
+    const tree = new Tree([0, 1, 2, 100]);
+    expect(tree.includes(100)).toBe(true);
+  });
+
+  it("Returns false if value is not in tree", () => {
+    const tree = new Tree([0, 1, 2, 3, 4, 5]);
+    expect(tree.includes(6)).toBe(false);
+  });
+});

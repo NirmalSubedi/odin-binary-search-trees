@@ -15,12 +15,12 @@ export class Node {
 }
 
 export class Tree {
-  #sortArray(array = []) {
+  #mergeSort(array = []) {
     if (array.length === 0) return [];
     if (array.length === 1) return array;
 
-    const leftHalf = this.#sortArray(array.slice(0, array.length / 2));
-    const rightHalf = this.#sortArray(array.slice(array.length / 2));
+    const leftHalf = this.#mergeSort(array.slice(0, array.length / 2));
+    const rightHalf = this.#mergeSort(array.slice(array.length / 2));
 
     const sorted = [];
     let l = 0;
@@ -53,8 +53,9 @@ export class Tree {
   }
 
   constructor(array = []) {
-    const sorted = this.#sortArray(array);
+    const sorted = this.#mergeSort(array);
     const uniques = this.#removeDuplicate(sorted);
+
     this.root = this.#buildTree(uniques);
   }
 
@@ -66,5 +67,16 @@ export class Tree {
     this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
     console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
     this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+
+  includes(value) {
+    const search = (root) => {
+      if (!root) return false;
+      if (root.data === value) return true;
+
+      return root.data > value ? search(root.left) : search(root.right);
+    };
+
+    return search(this.root);
   }
 }
