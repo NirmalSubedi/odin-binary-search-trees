@@ -1,4 +1,4 @@
-import { Node } from "../node.js";
+import { Node } from "./tree.js";
 
 it("Node constructor exists", () => {
   expect(Node).toBeDefined();

@@ -1,4 +1,18 @@
-import { Node } from "./node.js";
+export class Node {
+  constructor(data, left = null, right = null) {
+    this.data = data;
+    this.left = left;
+    this.right = right;
+  }
+
+  setLeft(value) {
+    this.left = value;
+  }
+
+  setRight(value) {
+    this.right = value;
+  }
+}
 
 export class Tree {
   #sortArray(array = []) {
@@ -23,17 +37,7 @@ export class Tree {
   }
 
   #removeDuplicate(array = []) {
-    const uniques = [];
-
-    for (let i = 0; i < array.length; ++i) {
-      const num = array[i];
-      const nextNum = array[i + 1];
-
-      if (nextNum === num) continue;
-      uniques.push(num);
-    }
-
-    return uniques;
+    return array.filter((num, index) => num !== array[index + 1]);
   }
 
   #buildTree(array = [], start = 0, end = array.length - 1) {

@@ -1,4 +1,4 @@
-import { Tree } from "../tree.js";
+import { Tree } from "./tree.js";
 
 describe("Tree Constructor", () => {
   it("Tree Constructor exist", () => {
