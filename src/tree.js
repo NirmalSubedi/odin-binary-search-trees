@@ -68,7 +68,3 @@ export class Tree {
     this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 }
-
-const tree = new Tree([3, 14, 5, 1, 5, 1, 51, 5, 7, 8, 83, 1]);
-tree.prettyPrint();
-console.log(tree.root);
