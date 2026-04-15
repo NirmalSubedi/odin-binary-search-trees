@@ -70,13 +70,75 @@ export class Tree {
   }
 
   includes(value) {
-    const search = (root) => {
-      if (!root) return false;
-      if (root.data === value) return true;
+    const search = (node) => {
+      if (!node) return false;
+      if (node.data === value) return true;
 
-      return root.data > value ? search(root.left) : search(root.right);
+      return value < node.data ? search(node.left) : search(node.right);
     };
 
     return search(this.root);
+
+    // Iterative approach below
+    // ========================
+    // let node = this.root;
+
+    // for (;;) {
+    //   if (!node) {
+    //     return false;
+    //   } else if (node.data === value) {
+    //     return true;
+    //   } else if (value < node.data) {
+    //     node = node.left;
+    //   } else {
+    //     node = node.right;
+    //   }
+    // }
+  }
+
+  #insertNode(currentNode, newNode) {
+    if (newNode.data === currentNode.data) return currentNode;
+
+    const direction = newNode.data < currentNode.data ? "left" : "right";
+    if (currentNode[direction] === null) {
+      currentNode[direction] = newNode;
+      return;
+    }
+
+    currentNode[direction] = this.#insertNode(currentNode[direction], newNode);
+  }
+
+  insert(value) {
+    const newNode = new Node(value);
+
+    if (this.root === null) {
+      this.root = newNode;
+    } else {
+      this.#insertNode(this.root, newNode);
+    }
+
+    return this;
+
+    // Iterative algorithm below
+    // =========================
+    // const newNode = new Node(value);
+    // if (this.root === null) {
+    //   this.root = newNode;
+    //   return this;
+    // }
+
+    // let currentNode = this.root;
+    // while (currentNode) {
+    //   if (value === currentNode.data) break;
+
+    //   const nextNode = value < currentNode.data ? "left" : "right";
+    //   if (currentNode[nextNode]) {
+    //     currentNode = currentNode[nextNode];
+    //   } else {
+    //     currentNode[nextNode] = newNode;
+    //   }
+    // }
+
+    // return this;
   }
 }
