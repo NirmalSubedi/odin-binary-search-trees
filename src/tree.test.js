@@ -41,7 +41,7 @@ describe("Tree Constructor", () => {
     });
   });
 
-  it("Builds a tree from array with duplicates", () => {
+  it("Builds a tree without any duplicates from array", () => {
     const tree = new Tree([5, 5, 3, 2]);
     expect(tree.root).toEqual({
       data: 3,
@@ -50,7 +50,7 @@ describe("Tree Constructor", () => {
     });
   });
 
-  it("Builds a tree with sub-trees", () => {
+  it("Builds a tree with leaves", () => {
     const tree = new Tree([1, 2, 3, 4, 5]);
     expect(tree.root).toEqual({
       data: 3,
@@ -67,7 +67,7 @@ describe("Tree Constructor", () => {
     });
   });
 
-  it("Builds a sub-trees with sub-trees", () => {
+  it("Builds sub-trees with leaves", () => {
     const tree = new Tree([1, 2, 3, 4, 5]);
     expect(tree.root).toEqual({
       data: 3,
@@ -96,14 +96,19 @@ describe("includes method", () => {
     expect(tree.includes()).toBe(false);
   });
 
-  it("Returns true value is at top-level root", () => {
+  it("Returns true value is at root", () => {
     const tree = new Tree([1]);
     expect(tree.includes(1)).toBe(true);
   });
 
-  it("Returns true if value is in a subtree", () => {
+  it("Returns true if value is in a leaf", () => {
     const tree = new Tree([0, 1, 2, 100]);
     expect(tree.includes(100)).toBe(true);
+  });
+
+  it("Returns true if value is in a subtree", () => {
+    const tree = new Tree([0, 1, 2, 3, 4]);
+    expect(tree.includes(3)).toBe(true);
   });
 
   it("Returns false if value is not in tree", () => {
@@ -135,26 +140,6 @@ describe("insert method", () => {
     expect(tree.root).toEqual({ data: 2, left: null, right: null });
   });
 
-  it("Does nothing if value is at left subtree", () => {
-    const tree = new Tree([1, 2, 3]);
-    tree.insert(1);
-    expect(tree.root).toEqual({
-      data: 2,
-      left: { data: 1, left: null, right: null },
-      right: { data: 3, left: null, right: null },
-    });
-  });
-
-  it("Does nothing if value is at right subtree", () => {
-    const tree = new Tree([1, 2, 3]);
-    tree.insert(3);
-    expect(tree.root).toEqual({
-      data: 2,
-      left: { data: 1, left: null, right: null },
-      right: { data: 3, left: null, right: null },
-    });
-  });
-
   it("Does nothing if value is at middle of the tree", () => {
     const tree = new Tree([1, 2, 3, 4, 5]);
     tree.insert(1);
@@ -173,7 +158,7 @@ describe("insert method", () => {
     });
   });
 
-  it("Inserts value on left subtree", () => {
+  it("Inserts value on left leaf", () => {
     const tree = new Tree([3]);
     tree.insert(2);
     expect(tree.root).toEqual({
@@ -183,7 +168,7 @@ describe("insert method", () => {
     });
   });
 
-  it("Inserts value on right subtree", () => {
+  it("Inserts value on right leaf", () => {
     const tree = new Tree([4]);
     tree.insert(5);
     expect(tree.root).toEqual({
@@ -192,4 +177,39 @@ describe("insert method", () => {
       right: { data: 5, left: null, right: null },
     });
   });
+});
+
+describe("delete method", () => {
+  it("delete method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "delete")).toBe(true);
+    expect(typeof Tree.prototype.delete).toBe("function");
+  });
+
+  let tree;
+  beforeEach(() => {
+    tree = new Tree([1, 2, 3, 4, 5]);
+  });
+
+  it("Does nothing if value is not in tree", () => {
+    tree.delete(0);
+    expect(tree.root).toEqual({
+      data: 3,
+      left: {
+        data: 1,
+        left: null,
+        right: { data: 2, left: null, right: null },
+      },
+      right: {
+        data: 4,
+        left: null,
+        right: { data: 5, left: null, right: null },
+      },
+    });
+  });
+
+  it.todo("Removes value at root");
+  it.todo("Removes value at left subtree");
+  it.todo("Removes value at right subtree");
+  it.todo("Removes value at left leaf");
+  it.todo("Removes value at right leaf");
 });
