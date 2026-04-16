@@ -96,16 +96,17 @@ export class Tree {
     // }
   }
 
-  #insertNode(currentNode, newNode) {
+  #insertNode(newNode, currentNode = this.root) {
     if (newNode.data === currentNode.data) return currentNode;
 
     const direction = newNode.data < currentNode.data ? "left" : "right";
-    if (currentNode[direction] === null) {
+    const nextNode = currentNode[direction];
+    if (nextNode === null) {
       currentNode[direction] = newNode;
       return;
     }
 
-    currentNode[direction] = this.#insertNode(currentNode[direction], newNode);
+    currentNode[direction] = this.#insertNode(newNode, nextNode);
   }
 
   insert(value) {
@@ -114,7 +115,7 @@ export class Tree {
     if (this.root === null) {
       this.root = newNode;
     } else {
-      this.#insertNode(this.root, newNode);
+      this.#insertNode(newNode);
     }
 
     return this;
@@ -137,6 +138,87 @@ export class Tree {
     //   } else {
     //     currentNode[nextNode] = newNode;
     //   }
+    // }
+
+    // return this;
+  }
+
+  #getPredecessor(node) {
+    while (node.right) node = node.right;
+    return node;
+  }
+
+  #deleteNode(node = this.root, value) {
+    // Node not found
+    if (node === null) return null;
+
+    // Search for Node
+    if (value < node.data) {
+      node.left = this.#deleteNode(node.left, value);
+    } else if (value > node.data) {
+      node.right = this.#deleteNode(node.right, value);
+    } else {
+      // Node found
+
+      // 0-1 child
+      if (node.left === null) return node.right;
+      if (node.right === null) return node.left;
+
+      // 2 children
+      const predecessor = this.#getPredecessor(node.left);
+      node.data = predecessor.data;
+      node.left = this.#deleteNode(node.left, predecessor.data);
+    }
+
+    // Updated node
+    return node;
+  }
+
+  delete(value) {
+    if (this.root !== null) {
+      this.root = this.#deleteNode(this.root, value);
+    }
+
+    return this;
+
+    // Iterative version:
+    // =================
+    // let parent = null;
+    // let curr = this.root;
+
+    // Search for value
+    // while (curr && curr.data !== value) {
+    //   parent = curr;
+    //   curr = value < curr.data ? curr.left : curr.right;
+    // }
+
+    // // Value not found
+    // if (curr === null) return this;
+
+    // // 2 children
+    // if (curr.left && curr.right) {
+    //   // Find in-order predecessor
+    //   let predParent = null;
+    //   let pred = curr.left;
+
+    //   while (pred.right) {
+    //     predParent = pred;
+    //     pred = pred.right;
+    //   }
+
+    //   curr.data = pred.data;
+    //   parent = predParent;
+    //   curr = pred;
+    // }
+
+    // // 1 or 0 child
+    // const child = curr.left || curr.right || null;
+    // if (!parent) {
+    //   this.root = child;
+    // } else if (parent.left === curr) {
+    //   parent.left = child;
+    // } else {
+    //   parent.right = child;
     // }
 
     // return this;

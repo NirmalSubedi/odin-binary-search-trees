@@ -96,23 +96,24 @@ describe("includes method", () => {
     expect(tree.includes()).toBe(false);
   });
 
+  let tree;
+  beforeAll(() => {
+    tree = new Tree([1, 2, 3, 4, 5]);
+  });
+
   it("Returns true value is at root", () => {
-    const tree = new Tree([1]);
-    expect(tree.includes(1)).toBe(true);
-  });
-
-  it("Returns true if value is in a leaf", () => {
-    const tree = new Tree([0, 1, 2, 100]);
-    expect(tree.includes(100)).toBe(true);
-  });
-
-  it("Returns true if value is in a subtree", () => {
-    const tree = new Tree([0, 1, 2, 3, 4]);
     expect(tree.includes(3)).toBe(true);
   });
 
+  it("Returns true if value is in a leaf", () => {
+    expect(tree.includes(2)).toBe(true);
+  });
+
+  it("Returns true if value is in a subtree", () => {
+    expect(tree.includes(1)).toBe(true);
+  });
+
   it("Returns false if value is not in tree", () => {
-    const tree = new Tree([0, 1, 2, 3, 4, 5]);
     expect(tree.includes(6)).toBe(false);
   });
 });
@@ -185,6 +186,21 @@ describe("delete method", () => {
     expect(typeof Tree.prototype.delete).toBe("function");
   });
 
+  it("Does nothing if tree is empty", () => {
+    const tree = new Tree();
+    const initialState = tree.root;
+    tree.delete(1);
+    tree.delete();
+    tree.delete(null);
+    expect(tree.root).toEqual(initialState);
+  });
+
+  it("Set the root to null if is the only node", () => {
+    const tree = new Tree([1]);
+    tree.delete(1);
+    expect(tree.root).toBeNull();
+  });
+
   let tree;
   beforeEach(() => {
     tree = new Tree([1, 2, 3, 4, 5]);
@@ -207,9 +223,50 @@ describe("delete method", () => {
     });
   });
 
-  it.todo("Removes value at root");
-  it.todo("Removes value at left subtree");
-  it.todo("Removes value at right subtree");
-  it.todo("Removes value at left leaf");
-  it.todo("Removes value at right leaf");
+  it("Removes node with 2 children and in-order predecessor inherits", () => {
+    tree.delete(3);
+    expect(tree.root).toEqual({
+      data: 2,
+      left: { data: 1, left: null, right: null },
+      right: {
+        data: 4,
+        left: null,
+        right: { data: 5, left: null, right: null },
+      },
+    });
+  });
+
+  it("Removes node with one child", () => {
+    tree.delete(1);
+    expect(tree.root).toEqual({
+      data: 3,
+      left: {
+        data: 2,
+        left: null,
+        right: null,
+      },
+      right: {
+        data: 4,
+        left: null,
+        right: { data: 5, left: null, right: null },
+      },
+    });
+  });
+
+  it("Removes node with no child", () => {
+    tree.delete(2);
+    expect(tree.root).toEqual({
+      data: 3,
+      left: {
+        data: 1,
+        left: null,
+        right: null,
+      },
+      right: {
+        data: 4,
+        left: null,
+        right: { data: 5, left: null, right: null },
+      },
+    });
+  });
 });
