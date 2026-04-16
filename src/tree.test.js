@@ -270,3 +270,71 @@ describe("delete method", () => {
     });
   });
 });
+
+describe("levelOrderForEach method", () => {
+  it("levelOrderForEach method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "levelOrderForEach")).toBe(true);
+    expect(typeof Tree.prototype.levelOrderForEach).toBe("function");
+  });
+
+  it("Throws Error if no callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.levelOrderForEach()).toThrow(Error);
+    expect(() => tree.levelOrderForEach({})).toThrow(Error);
+    expect(() => tree.levelOrderForEach([])).toThrow(Error);
+    expect(() => tree.levelOrderForEach(1)).toThrow(Error);
+    expect(() => tree.levelOrderForEach("")).toThrow(Error);
+    expect(() => tree.levelOrderForEach(1n)).toThrow(Error);
+    expect(() => tree.levelOrderForEach(true)).toThrow(Error);
+    expect(() => tree.levelOrderForEach(null)).toThrow(Error);
+  });
+
+  it("Does not throw if callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.levelOrderForEach(() => {})).not.toThrow();
+  });
+
+  let callback;
+  beforeAll(() => {
+    callback = jest.fn();
+  });
+
+  afterEach(() => {
+    callback.mockReset();
+  });
+
+  it("Does not call if root is null", () => {
+    const tree = new Tree();
+    tree.levelOrderForEach(callback);
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("Calls the callback", () => {
+    const tree = new Tree([1]);
+    tree.levelOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it("Calls callback with value", () => {
+    const tree = new Tree([1]);
+    tree.levelOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalledWith(1);
+  });
+
+  it("Correctly calls for 1 level", () => {
+    const tree = new Tree([1, 2, 3]);
+    tree.levelOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[2], [1], [3]]);
+  });
+
+  it("Correctly calls 2 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    tree.levelOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[3], [1], [4], [2], [5]]);
+  });
+});

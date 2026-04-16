@@ -223,4 +223,35 @@ export class Tree {
 
     // return this;
   }
+
+  #levelOrder(callback, queue = [this.root]) {
+    const currentNode = queue.shift();
+    if (!currentNode) return;
+
+    callback(currentNode.data);
+    if (currentNode.left) queue.push(currentNode.left);
+    if (currentNode.right) queue.push(currentNode.right);
+
+    this.#levelOrder(callback, queue);
+  }
+
+  levelOrderForEach(callback) {
+    if (typeof callback !== "function")
+      throw new Error("Callback must be a function");
+    if (this.root === null) return;
+
+    this.#levelOrder(callback);
+
+    // Iterative:
+    // ==========
+    // const queue = [this.root];
+    // while (queue.length > 0) {
+    //   const currentNode = queue.shift();
+
+    //   callback(currentNode.data);
+
+    //   if (currentNode.left) queue.push(currentNode.left);
+    //   if (currentNode.right) queue.push(currentNode.right);
+    // }
+  }
 }
