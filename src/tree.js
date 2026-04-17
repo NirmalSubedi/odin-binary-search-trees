@@ -237,8 +237,7 @@ export class Tree {
 
   levelOrderForEach(callback) {
     if (typeof callback !== "function")
-      throw new Error("Callback must be a function");
-    if (this.root === null) return;
+      throw new Error("Callback must be a function.");
 
     this.#levelOrder(callback);
 
@@ -252,6 +251,110 @@ export class Tree {
 
     //   if (currentNode.left) queue.push(currentNode.left);
     //   if (currentNode.right) queue.push(currentNode.right);
+    // }
+  }
+
+  #inOrder(callback, node = this.root) {
+    if (!node) return;
+
+    this.#inOrder(callback, node.left);
+    callback(node.data);
+    this.#inOrder(callback, node.right);
+  }
+
+  inOrderForEach(callback) {
+    if (typeof callback !== "function")
+      throw new Error("Callback must be a function.");
+
+    this.#inOrder(callback);
+
+    // Iterative
+    // =========
+    // if (typeof callback !== "function")
+    //   throw new Error("Callback must be a function");
+    // const stack = [];
+    // let curr = this.root;
+    // while (curr || stack.length > 0) {
+    //   if (curr) {
+    //     stack.push(curr);
+    //     curr = curr.left;
+    //   } else {
+    //     const node = stack.pop();
+    //     callback(node.data);
+    //     curr = node.right;
+    //   }
+    // }
+  }
+
+  #preOrder(callback, node = this.root) {
+    if (!node) return;
+
+    callback(node.data);
+    this.#preOrder(callback, node.left);
+    this.#preOrder(callback, node.right);
+  }
+
+  preOrderForEach(callback) {
+    if (typeof callback !== "function")
+      throw new Error("Callback must be a function.");
+
+    this.#preOrder(callback);
+
+    // Iterative
+    // =========
+
+    // if (typeof callback !== "function")
+    //   throw new Error("Callback must be a function");
+
+    // const stack = [];
+    // if (this.root) stack.push(this.root);
+
+    // while (stack.length > 0) {
+    //   const { data, left, right } = stack.pop();
+    //   callback(data);
+    //   if (right) stack.push(right);
+    //   if (left) stack.push(left);
+    // }
+  }
+
+  #postOrder(callback, node = this.root) {
+    if (!node) return;
+
+    this.#postOrder(callback, node.left);
+    this.#postOrder(callback, node.right);
+    callback(node.data);
+  }
+
+  postOrderForEach(callback) {
+    if (typeof callback !== "function")
+      throw new Error("Callback must be a function.");
+
+    this.#postOrder(callback);
+
+    // Iterative
+    // =========
+
+    // if (typeof callback !== "function")
+    //   throw new Error("Callback must be a function");
+
+    // const stack = [];
+    // let lastVisited = null;
+    // let curr = this.root;
+
+    // while (curr || stack.length > 0) {
+    //   while (curr) {
+    //     stack.push(curr);
+    //     curr = curr.left;
+    //   }
+
+    //   const peekNode = stack.at(-1);
+
+    //   if (peekNode.right && lastVisited !== peekNode.right) {
+    //     curr = peekNode.right;
+    //   } else {
+    //     callback(peekNode.data);
+    //     lastVisited = stack.pop();
+    //   }
     // }
   }
 }

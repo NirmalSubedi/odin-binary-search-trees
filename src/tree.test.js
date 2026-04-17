@@ -337,4 +337,236 @@ describe("levelOrderForEach method", () => {
 
     expect(callback.mock.calls).toEqual([[3], [1], [4], [2], [5]]);
   });
+
+  it("Correctly calls 3 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+    tree.levelOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[4], [2], [6], [1], [3], [5], [7]]);
+  });
+});
+
+describe("inOrderForEach method", () => {
+  it("inOrderForEach method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "inOrderForEach")).toBe(true);
+    expect(typeof Tree.prototype.inOrderForEach).toBe("function");
+  });
+
+  it("Throws Error if no callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.inOrderForEach()).toThrow(Error);
+    expect(() => tree.inOrderForEach({})).toThrow(Error);
+    expect(() => tree.inOrderForEach([])).toThrow(Error);
+    expect(() => tree.inOrderForEach(1)).toThrow(Error);
+    expect(() => tree.inOrderForEach("")).toThrow(Error);
+    expect(() => tree.inOrderForEach(1n)).toThrow(Error);
+    expect(() => tree.inOrderForEach(true)).toThrow(Error);
+    expect(() => tree.inOrderForEach(null)).toThrow(Error);
+  });
+
+  it("Does not throw if callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.inOrderForEach(() => {})).not.toThrow();
+  });
+
+  let callback;
+  beforeAll(() => {
+    callback = jest.fn();
+  });
+
+  afterEach(() => {
+    callback.mockReset();
+  });
+
+  it("Does not call if root is null", () => {
+    const tree = new Tree();
+    tree.inOrderForEach(callback);
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("Calls the callback", () => {
+    const tree = new Tree([1]);
+    tree.inOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it("Calls callback with value", () => {
+    const tree = new Tree([1]);
+    tree.inOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalledWith(1);
+  });
+
+  it("Correctly calls for 1 level", () => {
+    const tree = new Tree([1, 2, 3]);
+    tree.inOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[1], [2], [3]]);
+  });
+
+  it("Correctly calls 2 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    tree.inOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[1], [2], [3], [4], [5]]);
+  });
+
+  it("Correctly calls 3 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+    tree.inOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[1], [2], [3], [4], [5], [6], [7]]);
+  });
+});
+
+describe("preOrderForEach method", () => {
+  it("preOrderForEach method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "preOrderForEach")).toBe(true);
+    expect(typeof Tree.prototype.preOrderForEach).toBe("function");
+  });
+
+  it("Throws Error if no callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.preOrderForEach()).toThrow(Error);
+    expect(() => tree.preOrderForEach({})).toThrow(Error);
+    expect(() => tree.preOrderForEach([])).toThrow(Error);
+    expect(() => tree.preOrderForEach(1)).toThrow(Error);
+    expect(() => tree.preOrderForEach("")).toThrow(Error);
+    expect(() => tree.preOrderForEach(1n)).toThrow(Error);
+    expect(() => tree.preOrderForEach(true)).toThrow(Error);
+    expect(() => tree.preOrderForEach(null)).toThrow(Error);
+  });
+
+  it("Does not throw if callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.preOrderForEach(() => {})).not.toThrow();
+  });
+
+  let callback;
+  beforeAll(() => {
+    callback = jest.fn();
+  });
+
+  afterEach(() => {
+    callback.mockReset();
+  });
+
+  it("Does not call if root is null", () => {
+    const tree = new Tree();
+    tree.preOrderForEach(callback);
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("Calls the callback", () => {
+    const tree = new Tree([1]);
+    tree.preOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it("Calls callback with value", () => {
+    const tree = new Tree([1]);
+    tree.preOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalledWith(1);
+  });
+
+  it("Correctly calls for 1 level", () => {
+    const tree = new Tree([1, 2, 3]);
+    tree.preOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[2], [1], [3]]);
+  });
+
+  it("Correctly calls 2 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    tree.preOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[3], [1], [2], [4], [5]]);
+  });
+
+  it("Correctly calls 3 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+    tree.preOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[4], [2], [1], [3], [6], [5], [7]]);
+  });
+});
+
+describe("postOrderForEach method", () => {
+  it("postOrderForEach method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "postOrderForEach")).toBe(true);
+    expect(typeof Tree.prototype.postOrderForEach).toBe("function");
+  });
+
+  it("Throws Error if no callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.postOrderForEach()).toThrow(Error);
+    expect(() => tree.postOrderForEach({})).toThrow(Error);
+    expect(() => tree.postOrderForEach([])).toThrow(Error);
+    expect(() => tree.postOrderForEach(1)).toThrow(Error);
+    expect(() => tree.postOrderForEach("")).toThrow(Error);
+    expect(() => tree.postOrderForEach(1n)).toThrow(Error);
+    expect(() => tree.postOrderForEach(true)).toThrow(Error);
+    expect(() => tree.postOrderForEach(null)).toThrow(Error);
+  });
+
+  it("Does not throw if callback provided", () => {
+    const tree = new Tree();
+    expect(() => tree.postOrderForEach(() => {})).not.toThrow();
+  });
+
+  let callback;
+  beforeAll(() => {
+    callback = jest.fn();
+  });
+
+  afterEach(() => {
+    callback.mockReset();
+  });
+
+  it("Does not call if root is null", () => {
+    const tree = new Tree();
+    tree.postOrderForEach(callback);
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("Calls the callback", () => {
+    const tree = new Tree([1]);
+    tree.postOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it("Calls callback with value", () => {
+    const tree = new Tree([1]);
+    tree.postOrderForEach(callback);
+
+    expect(callback).toHaveBeenCalledWith(1);
+  });
+
+  it("Correctly calls for 1 level", () => {
+    const tree = new Tree([1, 2, 3]);
+    tree.postOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[1], [3], [2]]);
+  });
+
+  it("Correctly calls 2 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    tree.postOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[2], [1], [5], [4], [3]]);
+  });
+
+  it("Correctly calls 3 level", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+    tree.postOrderForEach(callback);
+
+    expect(callback.mock.calls).toEqual([[1], [3], [2], [5], [7], [6], [4]]);
+  });
 });
