@@ -570,3 +570,60 @@ describe("postOrderForEach method", () => {
     expect(callback.mock.calls).toEqual([[1], [3], [2], [5], [7], [6], [4]]);
   });
 });
+
+describe("height method", () => {
+  it("height method exits", () => {
+    expect(Object.hasOwn(Tree.prototype, "height")).toBe(true);
+    expect(typeof Tree.prototype.height).toBe("function");
+  });
+
+  it("Returns undefined if empty tree", () => {
+    const tree = new Tree();
+    expect(tree.height(1)).toBeUndefined();
+  });
+
+  it("Returns undefined if value not in tree", () => {
+    const tree = new Tree([1]);
+    expect(tree.height(2)).toBeUndefined();
+  });
+
+  it("Returns 0 for lone root", () => {
+    const tree = new Tree([1]);
+    expect(tree.height(1)).toBe(0);
+  });
+
+  it("Returns 0 for child leaf", () => {
+    const tree = new Tree([1, 2, 3]);
+    expect(tree.height(1)).toBe(0);
+  });
+
+  it("Returns 1 for root with 1 child leaf", () => {
+    const tree = new Tree([1, 2]);
+    expect(tree.height(1)).toBe(1);
+  });
+
+  it("Returns 1 for root with 2 child leaves", () => {
+    const tree = new Tree([1, 2, 3]);
+    expect(tree.height(2)).toBe(1);
+  });
+
+  it("Returns 2 for root with 1 grandchild leaf", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    expect(tree.height(3)).toBe(2);
+  });
+
+  it("Returns 2 for root with 2 grandchild leaves", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+    expect(tree.height(4)).toBe(2);
+  });
+
+  it("Returns 2 for middle node with 1 grandchild leaf", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    expect(tree.height(2)).toBe(2);
+  });
+
+  it("Returns 3 for root with 1 great-grandchild leaf ", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    expect(tree.height(5)).toBe(3);
+  });
+});

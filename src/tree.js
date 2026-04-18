@@ -144,8 +144,9 @@ export class Tree {
   }
 
   #getPredecessor(node) {
-    while (node.right) node = node.right;
-    return node;
+    let curr = node.left;
+    while (curr.right) curr = curr.right;
+    return curr;
   }
 
   #deleteNode(node = this.root, value) {
@@ -165,7 +166,7 @@ export class Tree {
       if (node.right === null) return node.left;
 
       // 2 children
-      const predecessor = this.#getPredecessor(node.left);
+      const predecessor = this.#getPredecessor(node);
       node.data = predecessor.data;
       node.left = this.#deleteNode(node.left, predecessor.data);
     }
@@ -243,6 +244,7 @@ export class Tree {
 
     // Iterative:
     // ==========
+    // if (!this.root) return;
     // const queue = [this.root];
     // while (queue.length > 0) {
     //   const currentNode = queue.shift();
@@ -356,5 +358,58 @@ export class Tree {
     //     lastVisited = stack.pop();
     //   }
     // }
+  }
+
+  #findNode(value, node = this.root) {
+    if (!node) return null;
+    if (node.data === value) return node;
+    return value < node.data
+      ? this.#findNode(value, node.left)
+      : this.#findNode(value, node.right);
+  }
+
+  #calculateHeight(node) {
+    if (node === null) return -1;
+    const left = this.#calculateHeight(node.left);
+    const right = this.#calculateHeight(node.right);
+
+    return 1 + Math.max(left, right);
+  }
+
+  height(value) {
+    const node = this.#findNode(value);
+
+    if (node) return this.#calculateHeight(node);
+
+    // Iterative
+    // =========
+    // if (!this.root) return;
+    // // Find node
+    // const queue = [this.root];
+    // let target = null;
+    // while (queue.length > 0) {
+    //   const node = queue.shift();
+    //   if (node.data === value) {
+    //     queue.length = 0;
+    //     target = node;
+    //     break;
+    //   }
+    //   if (node.left) queue.push(node.left);
+    //   if (node.right) queue.push(node.right);
+    // }
+    // if (!target) return;
+    // // Calculate Height
+    // let height = -1;
+    // queue.push(target);
+    // while (queue.length) {
+    //   let size = queue.length;
+    //   ++height;
+    //   while (size--) {
+    //     const node = queue.shift();
+    //     if (node.left) queue.push(node.left);
+    //     if (node.right) queue.push(node.right);
+    //   }
+    // }
+    // return height;
   }
 }
