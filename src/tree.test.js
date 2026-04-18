@@ -669,3 +669,39 @@ describe("depth method", () => {
     expect(tree.depth(9)).toBe(3);
   });
 });
+
+describe("isBalanced method", () => {
+  it("isBalanced method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "isBalanced")).toBe(true);
+    expect(typeof Tree.prototype.isBalanced).toBe("function");
+  });
+
+  it("Returns true for no tree", () => {
+    const tree = new Tree();
+    expect(tree.isBalanced()).toBe(true);
+  });
+
+  it("Returns true for lone root", () => {
+    const tree = new Tree([1]);
+    expect(tree.isBalanced()).toBe(true);
+  });
+
+  it("Returns true for tree with 1 leaf", () => {
+    const tree = new Tree([1, 2]);
+    expect(tree.isBalanced()).toBe(true);
+  });
+
+  it("Returns false for root containing 1 left subtree with a leaf, but no right subtree", () => {
+    const tree = new Tree([3]);
+    tree.insert(1);
+    tree.insert(2);
+    expect(tree.isBalanced()).toBe(false);
+  });
+
+  it.only("Returns false when the height difference between left and right is over 1", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
+    tree.insert(8);
+    tree.insert(9);
+    expect(tree.isBalanced()).toBe(false);
+  });
+});

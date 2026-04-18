@@ -97,16 +97,13 @@ export class Tree {
   }
 
   #insertNode(newNode, currentNode = this.root) {
+    if (currentNode === null) return newNode;
     if (newNode.data === currentNode.data) return currentNode;
 
     const direction = newNode.data < currentNode.data ? "left" : "right";
-    const nextNode = currentNode[direction];
-    if (nextNode === null) {
-      currentNode[direction] = newNode;
-      return;
-    }
+    currentNode[direction] = this.#insertNode(newNode, currentNode[direction]);
 
-    currentNode[direction] = this.#insertNode(newNode, nextNode);
+    return currentNode;
   }
 
   insert(value) {
@@ -442,5 +439,24 @@ export class Tree {
     //     if (node.right) queue.push(node.right);
     //   }
     // }
+  }
+
+  #checkBalance(node = this.root) {
+    if (node === null) return 0;
+
+    const left = this.#checkBalance(node.left);
+    if (left === -1) return -1;
+
+    const right = this.#checkBalance(node.right);
+    if (right === -1) return -1;
+
+    const diff = Math.abs(left - right);
+    if (diff > 1) return -1;
+
+    return Math.max(left, right) + 1;
+  }
+
+  isBalanced() {
+    return this.#checkBalance() !== -1;
   }
 }
