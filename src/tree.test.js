@@ -627,3 +627,45 @@ describe("height method", () => {
     expect(tree.height(5)).toBe(3);
   });
 });
+
+describe("depth method", () => {
+  it("depth method exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "depth")).toBe(true);
+    expect(typeof Tree.prototype.depth).toBe("function");
+  });
+
+  it("Returns undefined for empty tree", () => {
+    const tree = new Tree();
+    expect(tree.depth()).toBeUndefined();
+  });
+
+  it("Returns undefined for value not in tree", () => {
+    const tree = new Tree([1]);
+    expect(tree.depth(2)).toBeUndefined();
+  });
+
+  it("Returns 0 for value at root", () => {
+    const tree = new Tree([1]);
+    expect(tree.depth(1)).toBe(0);
+  });
+
+  it("Returns 1 for value one deep", () => {
+    const tree = new Tree([1, 2, 3]);
+    expect(tree.depth(3)).toBe(1);
+  });
+
+  it("Returns 1 for value one deep in middle of tree ", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    expect(tree.depth(5)).toBe(2);
+  });
+
+  it("Returns 2 for value two deep", () => {
+    const tree = new Tree([1, 2, 3, 4, 5]);
+    expect(tree.depth(5)).toBe(2);
+  });
+
+  it("Returns 3 for value three deep", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    expect(tree.depth(9)).toBe(3);
+  });
+});

@@ -412,4 +412,35 @@ export class Tree {
     // }
     // return height;
   }
+
+  #getDepth(value, node = this.root, depth = 0) {
+    if (node === null) return;
+    if (node.data === value) return depth;
+
+    const nextNode = value < node.data ? node.left : node.right;
+    return this.#getDepth(value, nextNode, depth + 1);
+  }
+
+  depth(value) {
+    return this.#getDepth(value);
+
+    // Iterative
+    // =========
+    // if (!this.root) return;
+
+    // const queue = [this.root];
+    // let depth = -1;
+
+    // while (queue.length) {
+    //   let size = queue.length;
+    //   ++depth;
+
+    //   while (size--) {
+    //     const node = queue.shift();
+    //     if (node.data === value) return depth;
+    //     if (node.left) queue.push(node.left);
+    //     if (node.right) queue.push(node.right);
+    //   }
+    // }
+  }
 }
