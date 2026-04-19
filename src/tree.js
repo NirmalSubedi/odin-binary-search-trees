@@ -458,5 +458,35 @@ export class Tree {
 
   isBalanced() {
     return this.#checkBalance() !== -1;
+
+    // Iterative
+    // =========
+    // const stack = [];
+    // const heights = new Map();
+    // let lastVisited = null;
+    // let curr = this.root;
+
+    // while (curr || stack.length) {
+    //   while (curr) {
+    //     stack.push(curr);
+    //     curr = curr.left;
+    //   }
+
+    //   const peekNode = stack.at(-1);
+
+    //   if (peekNode.right && lastVisited !== peekNode.right) {
+    //     curr = peekNode.right;
+    //   } else {
+    //     const leftHeight = heights.get(peekNode.left) || 0;
+    //     const rightHeight = heights.get(peekNode.right) || 0;
+
+    //     if (Math.abs(leftHeight - rightHeight) > 1) return false;
+
+    //     heights.set(peekNode, Math.max(leftHeight, rightHeight) + 1);
+    //     lastVisited = stack.pop();
+    //   }
+    // }
+
+    // return true;
   }
 }

@@ -691,6 +691,11 @@ describe("isBalanced method", () => {
     expect(tree.isBalanced()).toBe(true);
   });
 
+  it("Returns true for tree with subtrees", () => {
+    const tree = new Tree([1, 2, 3, 4, 5, 6, 7, 8, 9]);
+    expect(tree.isBalanced()).toBe(true);
+  });
+
   it("Returns false for root containing 1 left subtree with a leaf, but no right subtree", () => {
     const tree = new Tree([3]);
     tree.insert(1);
@@ -698,7 +703,7 @@ describe("isBalanced method", () => {
     expect(tree.isBalanced()).toBe(false);
   });
 
-  it.only("Returns false when the height difference between left and right is over 1", () => {
+  it("Returns false when the height difference between left and right is over 1", () => {
     const tree = new Tree([1, 2, 3, 4, 5, 6, 7]);
     tree.insert(8);
     tree.insert(9);
