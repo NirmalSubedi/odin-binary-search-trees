@@ -710,3 +710,103 @@ describe("isBalanced method", () => {
     expect(tree.isBalanced()).toBe(false);
   });
 });
+
+describe("rebalance method", () => {
+  it("rebalance methods exists", () => {
+    expect(Object.hasOwn(Tree.prototype, "rebalance")).toBe(true);
+    expect(typeof Tree.prototype.rebalance).toBe("function");
+  });
+
+  it("Does nothing for no tree", () => {
+    const tree = new Tree();
+    expect(tree.root).toBeNull();
+
+    tree.rebalance();
+
+    expect(tree.root).toBeNull();
+  });
+
+  it("Does nothing for balanced tree", () => {
+    const tree = new Tree([1, 2, 3]);
+    expect(tree.root).toEqual({
+      data: 2,
+      left: { data: 1, left: null, right: null },
+      right: { data: 3, left: null, right: null },
+    });
+
+    tree.rebalance();
+
+    expect(tree.root).toEqual({
+      data: 2,
+      left: { data: 1, left: null, right: null },
+      right: { data: 3, left: null, right: null },
+    });
+  });
+
+  it("Balances tree that is skew right", () => {
+    const tree = new Tree([1]);
+    tree.insert(2);
+    tree.insert(3);
+    tree.insert(4);
+    tree.insert(5);
+    expect(tree.isBalanced()).toBe(false);
+    expect(tree.root).toEqual({
+      data: 1,
+      left: null,
+      right: {
+        data: 2,
+        left: null,
+        right: {
+          data: 3,
+          left: null,
+          right: {
+            data: 4,
+            left: null,
+            right: { data: 5, left: null, right: null },
+          },
+        },
+      },
+    });
+
+    tree.rebalance();
+
+    expect(tree.isBalanced()).toBe(true);
+    expect(tree.root).toEqual({
+      data: 3,
+      left: {
+        data: 1,
+        left: null,
+        right: { data: 2, left: null, right: null },
+      },
+      right: {
+        data: 4,
+        left: null,
+        right: { data: 5, left: null, right: null },
+      },
+    });
+  });
+
+  it("Balances tree that is skew left", () => {
+    const tree = new Tree([5]);
+    tree.insert(4);
+    tree.insert(3);
+    tree.insert(2);
+    tree.insert(1);
+
+    expect(tree.isBalanced()).toBe(false);
+    tree.rebalance();
+    expect(tree.isBalanced()).toBe(true);
+  });
+
+  it("Balances tree with unbalanced subtrees", () => {
+    const tree = new Tree([1, 6, 7]);
+    tree.insert(2);
+    tree.insert(3);
+    tree.insert(4);
+    tree.insert(5);
+
+    expect(tree.isBalanced()).toBe(false);
+    tree.rebalance();
+    expect(tree.isBalanced()).toBe(true);
+  });
+});

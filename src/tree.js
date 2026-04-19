@@ -489,4 +489,14 @@ export class Tree {
 
     // return true;
   }
+
+  rebalance() {
+    const orderedArray = [];
+    const fillArray = (value) => {
+      orderedArray.push(value);
+    };
+    this.inOrderForEach(fillArray);
+
+    this.root = this.#buildTree(orderedArray);
+  }
 }
