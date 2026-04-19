@@ -810,3 +810,105 @@ describe("rebalance method", () => {
     expect(tree.isBalanced()).toBe(true);
   });
 });
+
+describe("Driver script", () => {
+  const getRandomValuesArray = (length = 10, minValue = 0, maxValue = 100) =>
+    Array.from({ length: length }, () =>
+      Math.round(Math.random() * maxValue + minValue)
+    );
+  const tree = new Tree(getRandomValuesArray());
+  const printCallback = jest.spyOn(console, "log");
+
+  afterEach(() => printCallback.mockReset());
+
+  it("generates balanced tree", () => {
+    expect(tree.isBalanced()).toBe(true);
+  });
+
+  it("prints out elements in level", () => {
+    tree.levelOrderForEach(console.log);
+
+    const values = [];
+    tree.levelOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+
+  it("prints out elements in pre", () => {
+    tree.preOrderForEach(console.log);
+
+    const values = [];
+    tree.preOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+
+  it("prints out elements in post", () => {
+    tree.postOrderForEach(console.log);
+
+    const values = [];
+    tree.postOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+
+  it("prints out elements in order", () => {
+    tree.inOrderForEach(console.log);
+
+    const values = [];
+    tree.inOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+    console.log(values);
+  });
+
+  it("unbalances the tree", () => {
+    const over100Values = getRandomValuesArray(5, 100);
+    over100Values.forEach((value) => {
+      tree.insert(value);
+    });
+
+    expect(tree.isBalanced()).toBe(false);
+  });
+
+  it("rebalance the tree", () => {
+    tree.rebalance();
+    expect(tree.isBalanced()).toBe(true);
+  });
+
+  it("prints out elements in level", () => {
+    tree.levelOrderForEach(console.log);
+
+    const values = [];
+    tree.levelOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+
+  it("prints out elements in pre", () => {
+    tree.preOrderForEach(console.log);
+
+    const values = [];
+    tree.preOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+
+  it("prints out elements in post", () => {
+    tree.postOrderForEach(console.log);
+
+    const values = [];
+    tree.postOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+
+  it("prints out elements in order", () => {
+    tree.inOrderForEach(console.log);
+
+    const values = [];
+    tree.inOrderForEach((value) => values.push(value));
+
+    expect(printCallback.mock.calls.map((call) => call[0])).toEqual(values);
+  });
+});

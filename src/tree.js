@@ -492,10 +492,7 @@ export class Tree {
 
   rebalance() {
     const orderedArray = [];
-    const fillArray = (value) => {
-      orderedArray.push(value);
-    };
-    this.inOrderForEach(fillArray);
+    this.inOrderForEach((value) => orderedArray.push(value));
 
     this.root = this.#buildTree(orderedArray);
   }
